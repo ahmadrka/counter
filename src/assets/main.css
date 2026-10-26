@@ -44,6 +44,12 @@
   --text-shadow-label: 1px 1px 1px #1e1a1a;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-base: #292929;
+  }
+}
+
 html {
   min-height: 100dvh;
   display: flex;
