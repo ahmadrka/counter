@@ -7,9 +7,16 @@ const count = ref<number>(
   localStorage.getItem('counter') ? Number(localStorage.getItem('counter')) : 0,
 )
 const lightOn = ref(false)
+const displayOff = ref(false)
 let lightTimer: ReturnType<typeof setTimeout> | null = null
+let displayTimer: ReturnType<typeof setTimeout> | null = null
 
 const add = () => {
+  if (!displayTimer) {
+    trigger()
+    return
+  }
+  trigger()
   count.value++
   localStorage.setItem('counter', String(count.value))
 }
@@ -22,6 +29,7 @@ const resetLongPress = () => {
 const reset = () => {
   count.value = 0
   localStorage.setItem('counter', String(count.value))
+  trigger()
 }
 
 const toggleLight = () => {
@@ -30,17 +38,32 @@ const toggleLight = () => {
   }
 
   lightOn.value = true
+  trigger()
 
   lightTimer = setTimeout(() => {
     lightOn.value = false
     lightTimer = null
   }, 5000)
 }
+
+const trigger = () => {
+  displayOff.value = false
+
+  if (displayTimer) {
+    clearTimeout(displayTimer)
+  }
+
+  displayTimer = setTimeout(() => {
+    displayOff.value = true
+    displayTimer = null
+  }, 60 * 1000)
+}
+trigger()
 </script>
 
 <template>
   <section class="counter">
-    <div :class="['display', { 'light-on': lightOn }]">
+    <div :class="['display', { 'light-on': lightOn }, { 'display-off': displayOff }]">
       <span class="placeholder">88888</span>
       <span class="value">{{ String(count).replaceAll('0', 'o') }}</span>
     </div>
@@ -100,6 +123,17 @@ const toggleLight = () => {
     .value {
       color: var(--display-text-on);
       mix-blend-mode: overlay;
+    }
+  }
+
+  .display.display-off {
+    .placeholder {
+      color: transparent;
+    }
+
+    .value {
+      color: transparent;
+      text-shadow: none;
     }
   }
 
