@@ -47,6 +47,13 @@ const toggleLight = () => {
 }
 
 const trigger = () => {
+  // Trigger vibration (haptic) on supported device/browser
+  if ('vibrate' in navigator) {
+    navigator.vibrate(50)
+  } else {
+    console.warn('Vibration API not supported on this device/browser.')
+  }
+
   displayOff.value = false
 
   if (displayTimer) {
