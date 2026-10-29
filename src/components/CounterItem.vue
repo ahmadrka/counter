@@ -22,6 +22,7 @@ const add = () => {
 }
 
 const resetLongPress = () => {
+  trigger()
   count.value = 88888
   localStorage.setItem('counter', String(0))
 }
@@ -29,7 +30,6 @@ const resetLongPress = () => {
 const reset = () => {
   count.value = 0
   localStorage.setItem('counter', String(count.value))
-  trigger()
 }
 
 const toggleLight = () => {
@@ -71,8 +71,8 @@ trigger()
 <template>
   <section class="counter">
     <div :class="['display', { 'light-on': lightOn }, { 'display-off': displayOff }]">
-      <span class="placeholder">88888</span>
-      <span class="value">{{ String(count).replaceAll('0', 'o') }}</span>
+      <span class="placeholder notranslate" translate="no">88888</span>
+      <span class="value notranslate" translate="no">{{ String(count).replaceAll('0', 'o') }}</span>
     </div>
     <div class="label">
       <span>RESET</span>
@@ -80,7 +80,12 @@ trigger()
       <span>LIGHT</span>
     </div>
     <div class="buttons">
-      <ButtonCycleSmall id="reset" @pointerdown="resetLongPress" @pointerup="reset" />
+      <ButtonCycleSmall
+        id="reset"
+        @pointerdown="resetLongPress"
+        @pointerup="reset"
+        @pointerleave="reset"
+      />
       <div class="add">
         <ButtonCycleLarge id="add" @pointerdown="add" />
       </div>
