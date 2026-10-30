@@ -86,7 +86,7 @@ trigger()
         id="reset"
         @pointerdown="resetLongPress"
         @pointerup="reset"
-        @pointerleave="reset"
+        @pointerleave="(e: PointerEvent) => e.buttons === 1 && reset()"
       />
       <div class="add">
         <ButtonCycleLarge id="add" @pointerdown="add" />
