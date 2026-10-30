@@ -2,6 +2,7 @@
 import { IconBrandFigma, IconExternalLink, IconRestore, IconWorld } from '@tabler/icons-vue'
 import IconBrandGithub from './icons/IconBrandGithub.vue'
 import { ref, watchEffect } from 'vue'
+import { hexModification } from './helper/colorConverter.ts'
 
 defineProps<{ menuOpen: boolean }>()
 
@@ -33,7 +34,13 @@ watchEffect(() => {
           <li class="list-item">
             <label
               class="input"
-              v-on:change="(e) => (value.displayColor = (e.target as HTMLInputElement).value)"
+              v-on:change="
+                (e) =>
+                  (value.displayColor = hexModification((e.target as HTMLInputElement).value, {
+                    s: 30,
+                    l: 40,
+                  }))
+              "
             >
               <span class="label">Display Color</span>
               <span
