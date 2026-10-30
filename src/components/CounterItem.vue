@@ -3,6 +3,8 @@ import { ref } from 'vue'
 import ButtonCycleLarge from './ui/ButtonCycleLarge.vue'
 import ButtonCycleSmall from './ui/ButtonCycleSmall.vue'
 
+const props = defineProps<{ menuOpen: boolean }>()
+
 const count = ref<number>(
   localStorage.getItem('counter') ? Number(localStorage.getItem('counter')) : 0,
 )
@@ -69,7 +71,7 @@ trigger()
 </script>
 
 <template>
-  <section class="counter">
+  <section :class="['counter', { 'menu-open': props.menuOpen }]">
     <div :class="['display', { 'light-on': lightOn }, { 'display-off': displayOff }]">
       <span class="placeholder notranslate" translate="no">88888</span>
       <span class="value notranslate" translate="no">{{ String(count).replaceAll('0', 'o') }}</span>
@@ -103,6 +105,8 @@ trigger()
   background-color: var(--background-surface);
   box-shadow: var(--emboss-default);
   border-radius: 32px 32px 96px 96px;
+  transform: translateX(0);
+  transition: transform 0.8s ease-in-out;
 
   .display {
     position: relative;
@@ -177,6 +181,16 @@ trigger()
     .add {
       padding-top: 16px;
     }
+  }
+}
+
+.counter.menu-open {
+  transform: translateX(-225px);
+}
+
+@media (max-width: 768px) {
+  .counter.menu-open {
+    transform: translateY(-194.5px);
   }
 }
 </style>
